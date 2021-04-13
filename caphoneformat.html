@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body>
+<div ng-app="myApp" ng-controller="phoneCtrl">
+   <form>
+    Your Phone: <input type="text" id="canadaphone" ng-model="phone" canada-phone />
+  </form>
+  <h1>You entered: {{phone | phonenumber }}</h1>
+  <h1>Model value: {{phone | phonenumber2}}</h1>
+</div>
+  
+ <script>
+ var app = angular.module('myApp', []);
+app.filter('phonenumber', function() {
+    return function (number) {
+        if (!number) { return ''; }
+        number = String(number);
+        var formattedNumber = number;
+        number = number[0] == '1' ? number.slice(1) : number;
+        var area = number.substring(0,3);
+        var front = number.substring(3, 6);
+        var end = number.substring(6, 10);
+
+        if (front) {
+            formattedNumber = ("(" + area + ") " + front);  
+        }
+        if (end) {
+            formattedNumber += ("-" + end);
+        }	
+        return formattedNumber;
+    };
+});
+
+app.filter('phonenumber2', function() {
+    return function (number) {
+        if (!number) { return ''; }
+        number = String(number);
+        var formattedNumber = number[0] == '1' ? number.slice(1) : number;
+		if (formattedNumber.length != 10){
+		formattedNumber = null;
+		}
+        return formattedNumber;
+    };
+});
+
+app.controller('phoneCtrl', function($scope) {
+    $scope.phone = 6475533399;
+});
+</script>
+<div>for reference only</div>
+</body>
+</html>
